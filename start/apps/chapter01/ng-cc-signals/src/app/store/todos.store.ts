@@ -1,11 +1,11 @@
-import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { getState, patchState, signalStore, watchState, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 
 import { TodoItem } from './todos.model';
-import { computed } from '@angular/core';
+import { computed, effect } from '@angular/core';
 import { filter } from 'rxjs';
 
 //this  state having array of todo items that i defined in todos.model.ts
-
+const ngrxStorekeu ="jfahsdkflksa;fasdf";
 type todoFilter ='all' | 'active' | 'completed';
 type TodoState ={
     todos :TodoItem[] ;
@@ -82,10 +82,34 @@ export const todoStore = signalStore(
             }
         }),
 
-    }))
+    })),
+
+    withHooks({
+        //this is initial state :keeping store
+        onInit(store) {
+            const todosForStore = JSON.parse(localStorage.getItem(ngrxStorekeu) || '[]');
+//getting data from local storage and set it main storage arrya 
+            console.log('onInit',todosForStore)
+            patchState(store, {
+                todos: todosForStore,
+            });
+            effect(()=>{
+                const state =getState(store)  //this is not signal it plain object
+                console.log('effect changed',state)
+                localStorage.setItem(ngrxStorekeu,JSON.stringify(state.todos))
+            })
+            // watchState(store, ({todos}) => {
+            //     // console.log('store changed',state);
+            //     localStorage.setItem(ngrxStorekeu,JSON.stringify(todos))
+
+            // });
+        },
+    })
 
 );
 //how to know other file that i am using this store ??
 // - provide it in app.module.ts/app.component.ts
 // - this store option in root module --erery component access this store
+
+//why we getting store change before effect changed : watchstate run before ,then effect: effect combined all states changes before it run and show effects
 

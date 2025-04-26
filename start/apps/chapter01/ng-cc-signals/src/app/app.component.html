@@ -39,9 +39,16 @@
 
     <!-- Filters -->
     <div class="mt-4">
-      <button (click)="store.changeFilter('all')" class="p-2 rounded mr-2">All</button>
-      <button (click)="store.changeFilter('active')" class="p-2 rounded mr-2">Active</button>
-      <button (click)="store.changeFilter('completed')" class="p-2 rounded">Completed</button>
+      <button 
+      [class.btn-primary]="store.filter() === 'all'"
+    
+      (click)="store.changeFilter('all')" class="p-2 rounded mr-2">All</button>
+      <button 
+        [class.btn-primary]="store.filter() === 'active'"
+      (click)="store.changeFilter('active')" class="p-2 rounded mr-2">Active</button>
+      <button 
+      [class.btn-primary]="store.filter() === 'completed'"
+      (click)="store.changeFilter('completed')" class="p-2 rounded">Completed</button>
     </div>
   </div>
 
