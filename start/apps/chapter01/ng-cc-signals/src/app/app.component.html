@@ -9,11 +9,15 @@
       <span>(0 / 0)</span>
     </div>
 
-    <!-- Task Input -->
-    <div class="mb-4">
-      <input class="p-2 border rounded mr-2" placeholder="New task..." />
-      <button>Add</button>
-    </div>
+    <!-- Task Input
+     adding a new todo and alos reset the input field -->
+    <form (ngSubmit)="submitNewTodo()" class="mb-4">
+      <input required 
+      [(ngModel)]="newTodoTitle"
+      name="newTodoTitle"
+      class="p-2 border rounded mr-2" placeholder="New task..." />
+      <button type="submit">Add</button>
+    </form>
 
     <!-- Task List -->
     <ul>
