@@ -17,7 +17,7 @@
 
     <!-- Task List -->
     <ul>
-      @for (task of tasks; track $index) {
+      @for (task of store.todos(); track $index) {
         <li class="mb-2 flex gap-4 items-center cursor-pointer hover:opacity-70">
           <input type="checkbox" [checked]="task.completed" />
           <span [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>

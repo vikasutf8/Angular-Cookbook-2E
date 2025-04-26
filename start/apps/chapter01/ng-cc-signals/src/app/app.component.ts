@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '@codewithahsan/ng-cb-ui';
+import { todoStore } from './store/todos.store';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +12,6 @@ import { HeaderComponent } from '@codewithahsan/ng-cb-ui';
   imports: [HeaderComponent, CommonModule, RouterModule, HeaderComponent],
 })
 export class AppComponent {
-  tasks = [
-    { title: 'Buy milk', completed: false },
-    { title: 'Read a book', completed: true },
-  ];
+ // their all todo items rendered from todos.store.ts
+ store =inject(todoStore);
 }
