@@ -29,8 +29,23 @@ export const todoStore = signalStore(
                     ...store.todos(),
                 ]
             })
-        }
+        },
+
+        toggleTodo(todo_id :string) {
+            patchState(store, {
+                todos: store.todos().map((todo) => {
+                    if (todo.id === todo_id) {
+                        return {
+                            ...todo,
+                            completed: !todo.completed,
+                        };
+                    }
+                    return todo;
+                }),
+            });
+        },
     }))
+
 );
 //how to know other file that i am using this store ??
 // - provide it in app.module.ts/app.component.ts

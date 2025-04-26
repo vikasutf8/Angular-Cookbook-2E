@@ -10,19 +10,27 @@
     </div>
 
     <!-- Task Input
-     adding a new todo and alos reset the input field -->
+     adding a new todo and alos reset the input field
+     disable nothing in input
+     requried isn't working bec its ngSubmit --> 
     <form (ngSubmit)="submitNewTodo()" class="mb-4">
       <input required 
       [(ngModel)]="newTodoTitle"
       name="newTodoTitle"
       class="p-2 border rounded mr-2" placeholder="New task..." />
-      <button type="submit">Add</button>
+      <button 
+      type="submit"
+      [disabled]="!newTodoTitle()"
+      >Add</button>
     </form>
 
-    <!-- Task List -->
+    <!-- Task List
+     direct function calling to store -->
     <ul>
       @for (task of store.todos(); track $index) {
-        <li class="mb-2 flex gap-4 items-center cursor-pointer hover:opacity-70">
+        <li 
+        (click)="store.toggleTodo(task.id)"
+        class="mb-2 flex gap-4 items-center cursor-pointer hover:opacity-70">
           <input type="checkbox" [checked]="task.completed" />
           <span [ngClass]="{'line-through': task.completed}">{{ task.title }}</span>
         </li>
