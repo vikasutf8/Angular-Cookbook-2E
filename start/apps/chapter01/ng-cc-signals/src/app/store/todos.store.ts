@@ -1,14 +1,21 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 
 import { TodoItem } from './todos.model';
+import { computed } from '@angular/core';
+import { filter } from 'rxjs';
 
 //this  state having array of todo items that i defined in todos.model.ts
+
+type todoFilter ='all' | 'active' | 'completed';
 type TodoState ={
     todos :TodoItem[] ;
+    filter:todoFilter;
 }
 
 const initialState :TodoState = {
-    todos : [ ]
+    todos : [ ],
+    filter : 'all'
+
 }
 
 export const todoStore = signalStore(
@@ -44,6 +51,37 @@ export const todoStore = signalStore(
                 }),
             });
         },
+
+        changeFilter(filter :todoFilter) {
+            patchState(store, {filter})
+        }
+
+        
+    })),
+
+    withComputed((store)=>({
+        //also use .length()at end for count only ..now it returns array of todos
+        completedTodos :computed(() => 
+           store.todos().filter((todo)=>{
+            return todo.completed;
+           })
+        ),
+//first we changed filter and on based we completed property of todoitem render listing 
+        filteredTodos :computed(() => {
+            switch (store.filter()) {
+                case 'active':
+                    return store.todos().filter((todo)=>{
+                        return !todo.completed;
+                    })
+                case 'completed':
+                    return store.todos().filter((todo)=>{
+                        return todo.completed;
+                    })
+                default:
+                    return store.todos(); //this is main list
+            }
+        }),
+
     }))
 
 );
